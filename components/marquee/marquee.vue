@@ -39,7 +39,8 @@ export default {
             default: 'up'
         },
         length: {
-            type: Number
+            type: Number,
+            default: 0
         }
     },
     mounted: function () {
