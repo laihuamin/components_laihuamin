@@ -1,0 +1,26 @@
+{
+  "name": "my-components",
+  "version": "1.0.0",
+  "description": "自己的组件库",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laihuamin/components_laihuamin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/laihuamin/components_laihuamin/issues"
+  },
+  "homepage": "https://github.com/laihuamin/components_laihuamin#readme",
+  "dependencies": {
+    "vue-cli": "^2.9.3"
+  }
+}
