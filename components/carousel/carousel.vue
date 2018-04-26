@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { openURL } from 'commons/js/bbhybrid.js';
-import DotGroup from './dotGroup.vue';
+import { openURL } from 'commons/js/bbhybrid.js'
+import DotGroup from './dot-group.vue'
 export default {
   name: 'vue-carousel',
   props: {
@@ -77,171 +77,174 @@ export default {
     hasTimer: false
   }),
   destroy() {
-    this.timer && this.clearTimer();
+    this.timer && this.clearTimer()
   },
   mounted() {
     if (this.order === 'backward') {
-      this.go(true);
+      this.go(true)
     }
-    this.setTimer();
+    this.setTimer()
   },
   methods: {
     // 点击图片跳转
     toOpen(target) {
       if (!target) {
-        return;
+        return
       }
-      openURL(target);
+      openURL(target)
     },
     // 初始化index
     go(direction) {
-      let len = this.carouselImg.length;
-      this.noAnimate = true;
+      let len = this.carouselImg.length
+      this.noAnimate = true
       if (direction) {
-        this.currentIndex = 0;
-        this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100;
+        this.currentIndex = 0
+        this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100
       } else {
-        this.currentIndex = len - 1;
-        this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100;
+        this.currentIndex = len - 1
+        this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100
       }
     },
     setTimer() {
-      let len = this.carouselImg.length;
+      let len = this.carouselImg.length
       if (this.autoplay && len > 1) {
         this.timer = setTimeout(() => {
-          this.noAnimate = false;
-          this.hasTimer = true;
+          this.noAnimate = false
+          this.hasTimer = true
           if (this.order === 'backward') {
-            this.currentIndex += 1;
-            this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100;
+            this.currentIndex += 1
+            this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100
           } else {
-            this.currentIndex -= 1;
-            this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100;
+            this.currentIndex -= 1
+            this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100
           }
           if (this.currentIndex >= len) {
             setTimeout(() => {
-              this.go(true);
-            }, this.interval);
+              this.go(true)
+            }, this.interval)
           } else if (this.currentIndex <= -1) {
             setTimeout(() => {
-              this.go(false);
-            }, this.interval);
+              this.go(false)
+            }, this.interval)
           } else {
-            this.noAnimate = false;
+            this.noAnimate = false
           }
-          this.setTimer();
-        }, this.delay * 1000 + this.interval);
+          this.setTimer()
+        }, this.delay * 1000 + this.interval)
       }
     },
     // 当滑动的时候设置偏移量
     slid(currentIndex, pos) {
-      let len = this.carouselImg.length;
-      let order = pos.deltaX / pos.absX;
+      let len = this.carouselImg.length
+      let order = pos.deltaX / pos.absX
       if (order === 1) {
-        this.currentTranslateX += pos.absX / (750 * (len + 2));
+        this.currentTranslateX += pos.absX / (750 * (len + 2))
       } else {
-        this.currentTranslateX -= pos.absX / (750 * (len + 2));
+        this.currentTranslateX -= pos.absX / (750 * (len + 2))
       }
     },
     // 滑动函数
     transitionTo(index) {
-      let len = this.carouselImg.length;
-      this.clearTimer();
-      this.currentIndex = index;
-      this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100;
+      let len = this.carouselImg.length
+      this.clearTimer()
+      this.currentIndex = index
+      this.currentTranslateX = (this.currentIndex + 1) / (len + 2) * 100
       if (this.currentIndex === len) {
         setTimeout(() => {
-          this.go(true);
-        }, this.interval);
+          this.go(true)
+        }, this.interval)
       } else if (this.currentIndex === -1) {
         setTimeout(() => {
-          this.go(false);
-        }, this.interval);
+          this.go(false)
+        }, this.interval)
       } else {
-        this.noAnimate = false;
+        this.noAnimate = false
       }
       if (!this.hasTimer) {
-        this.setTimer();
+        this.setTimer()
       }
     },
     clearTimer() {
       if (this.timer) {
-        clearTimeout(this.timer);
-        this.hasTimer = false;
+        clearTimeout(this.timer)
+        this.hasTimer = false
       }
     },
     // 计算touch偏移量
     calculatePos(e) {
-      let clientX = e.changedTouches[0].clientX;
-      let clientY = e.changedTouches[0].clientY;
-      let xd = this.x - clientX;
-      let yd = this.y - clientY;
-      let axd = Math.abs(xd);
-      let ayd = Math.abs(yd);
+      let clientX = e.changedTouches[0].clientX
+      let clientY = e.changedTouches[0].clientY
+      let xd = this.x - clientX
+      let yd = this.y - clientY
+      let axd = Math.abs(xd)
+      let ayd = Math.abs(yd)
       return {
         deltaX: xd,
         deltaY: yd,
         absX: axd,
         absY: ayd
-      };
+      }
     },
+    // 开始touch事件
     onTouchstart(e) {
       if (e.touches.length > 1) {
-        return;
+        return
       }
       if (this.count === 1) {
-        this.touch = false;
-        return;
+        this.touch = false
+        return
       }
       if (this.touch) {
-        return;
+        return
       }
-      this.touch = true;
-      this.clearTimer();
-      this.start = Date.now();
-      this.x = e.touches[0].clientX;
-      this.y = e.touches[0].clientY;
+      this.touch = true
+      this.clearTimer()
+      this.start = Date.now()
+      this.x = e.touches[0].clientX
+      this.y = e.touches[0].clientY
     },
+    // touch事件的过程
     onTouchmove(e) {
       if (this.preventDefault) {
-        e.preventDefault();
+        e.preventDefault()
       }
       if (!this.touch) {
-        return;
+        return
       }
-      let pos = this.calculatePos(e);
+      let pos = this.calculatePos(e)
       if (pos.absX > pos.absY) {
-        e.preventDefault();
-        this.slid(this.currentTranslateX, pos);
+        e.preventDefault()
+        this.slid(this.currentTranslateX, pos)
       }
     },
+    // 结束touch事件
     onTouchend(e) {
       if (!this.touch) {
-        return;
+        return
       }
-      let {
- loop, start, flickThreshold, delta, currentIndex 
-} = this;
-      let pos = this.calculatePos(e);
-      let time = Date.now() - start;
-      let velocity = Math.sqrt(pos.absX * pos.absX + pos.absY * pos.absY) / time;
-      let isFlick = velocity > flickThreshold;
-      let newIndex = currentIndex;
+      let { loop, start, flickThreshold, delta, currentIndex } = this
+      let pos = this.calculatePos(e)
+      let time = Date.now() - start
+      let velocity = Math.sqrt(pos.absX * pos.absX + pos.absY * pos.absY) / time
+      let isFlick = velocity > flickThreshold
+      let newIndex = currentIndex
       if (isFlick || pos.absX > delta) {
-        newIndex = newIndex + pos.absX / pos.deltaX;
+        newIndex = newIndex + pos.absX / pos.deltaX
       }
-      this.transitionTo(newIndex);
-      this.cleanTouch();
+      this.transitionTo(newIndex)
+      this.cleanTouch()
     },
+    // 取消touch事件
     onTouchcancel() {
       if (!this.touch) {
-        return;
+        return
       }
-      this.transitionTo(this.currentIndex);
-      this.cleanTouch();
+      this.transitionTo(this.currentIndex)
+      this.cleanTouch()
     },
+    // 清除touch标识
     cleanTouch() {
-      this.touch = false;
+      this.touch = false
     }
   },
   components: {
@@ -249,25 +252,24 @@ export default {
   },
   computed: {
     computedLoop() {
-      return this.carouselImg.length > 1 ? this.loop : false;
+      return this.carouselImg.length > 1 ? this.loop : false
     }
   }
-};
+}
 </script>
 
 <style lang="less">
-@b: 46.875rem;
 .VueCarousel {
   width: 100%;
-  height: 226/@b;
+  height: 226px;
   position: relative;
   overflow: hidden;
   .carousel-wrapper {
-    height: 226/@b;
+    height: 226px;
     .carousel-item {
-      width: 702/@b;
-      height: 202/@b;
-      padding: 0 24/@b 24/@b;
+      width: 702px;
+      height: 202px;
+      padding: 0 24px 24px;
       float: left;
       .image {
         width: 100%;
